@@ -1,0 +1,219 @@
+💐 WELCOME TO YOUR EVER AFTER WEDDING PLANNER!
+═══════════════════════════════════════════════════
+
+Congratulations on your engagement! Let's get your
+planner set up. It takes 5 minutes — no tech
+skills needed! We'll walk through it together. 💕
+
+═══════════════════════════════════════════════════
+STEP 1: UNZIP THE FOLDER
+═══════════════════════════════════════════════════
+
+  Don't worry, this is easier than it sounds!
+
+  • Find the file you downloaded:
+    "Ever-After-Planner.zip"
+    (usually in your Downloads folder)
+
+  • RIGHT-CLICK on it
+    → Choose "Extract All" (Windows)
+    → OR just double-click (Mac)
+
+  • A new folder will appear right next to the
+    zip file. That's your planner! 📁
+
+  You can delete the zip file now if you'd like —
+  you don't need it anymore.
+
+
+═══════════════════════════════════════════════════
+STEP 2: OPEN YOUR PLANNER
+═══════════════════════════════════════════════════
+
+  • Open the new folder
+
+  • You'll see three files:
+    ✦ index.html
+    ✦ style.css
+    ✦ script.js
+
+  • DOUBLE-CLICK on "index.html"
+    (this is your planner!)
+
+  • Your planner opens in your web browser ✨
+
+
+═══════════════════════════════════════════════════
+STEP 3: BOOKMARK IT (so you don't lose it!)
+═══════════════════════════════════════════════════
+
+  • With the planner open in your browser, press:
+    → Ctrl + D (Windows)
+    → Cmd + D (Mac)
+
+  • Name it "My Wedding Planner"
+  • Click "Save"
+
+  Your planner is now in your bookmarks forever! 🔖
+
+
+═══════════════════════════════════════════════════
+STEP 4: START PLANNING!
+═══════════════════════════════════════════════════
+
+  • Click any tab at the top to explore:
+    Overview, Wedding Day, Appointments, Budget,
+    Guests, Seating, Venue, Events, Wedding Party,
+    Gifts, Mood Board, Honeymoon
+
+  • Fill in your details on "Overview" first
+
+  • Everything saves AUTOMATICALLY as you type!
+    No save button needed. 💾
+
+
+═══════════════════════════════════════════════════
+💡 HOW YOUR DATA WORKS (the friendly truth!)
+═══════════════════════════════════════════════════
+
+  Think of your planner like a notebook. When you
+  write in it, the words stay on those pages.
+
+  Your planner saves your information IN THE
+  BROWSER you open it in. That's it! Simple!
+
+  ✨ THE GOOD NEWS:
+     Your data stays safe even when you close
+     the browser or shut down your computer.
+     Come back tomorrow — it's all still there!
+
+  🌿 TWO THINGS TO KNOW:
+
+  1) If you open your planner in a DIFFERENT
+     BROWSER (like switching from Chrome to
+     Safari), it will look empty — but don't
+     panic! Your original data is still safe
+     in the first browser. Just go back to it,
+     or follow Step 5 below to bring your data
+     with you.
+
+  2) If you open your planner on a DIFFERENT
+     DEVICE (like your phone instead of your
+     laptop), same thing — it will start empty
+     on that device. Your data isn't lost!
+     It's just sitting in the first place you
+     used.
+
+  💡 THE EASIEST RULE:
+     Pick ONE browser on ONE device as your
+     "wedding planning home." That's where
+     everything lives. You can always bring
+     a copy somewhere else — see Step 5!
+
+
+═══════════════════════════════════════════════════
+STEP 5: BACK UP YOUR DATA (do this weekly!)
+═══════════════════════════════════════════════════
+
+  At the top of your planner, you'll see two
+  buttons: "Export Data" and "Import"
+
+  📥 EXPORT DATA:
+     Click this once a week to download a backup
+     file. It'll be called something like
+     "wedding-planner-backup-2026-04-17.json"
+
+     Save it somewhere safe! Some ideas:
+       • Email it to yourself
+       • Save to Google Drive / iCloud / Dropbox
+       • Put it in a "Wedding" folder
+
+  📤 IMPORT:
+     If you ever need to restore your data
+     (new computer, new browser, accidental
+     clearing of browsing history), click
+     Import and choose your backup file —
+     everything comes back! 🎉
+
+  That's your safety net. Easy peasy!
+
+
+═══════════════════════════════════════════════════
+❓ FREQUENTLY ASKED QUESTIONS
+═══════════════════════════════════════════════════
+
+Q: My planner won't open!
+A: Make sure you UNZIPPED the folder first.
+   You need to see the regular folder with
+   three files inside — not the zip file
+   itself.
+
+Q: I closed my browser. Is my data gone?
+A: Nope, it's still there! Open your bookmark
+   (or double-click index.html again) and
+   everything is waiting for you. Promise! 💕
+
+Q: Can I use this on my phone?
+A: Yes! Email the folder to yourself, or save
+   it to Google Drive / iCloud, then open
+   index.html from your phone. Just remember
+   it'll be a separate copy from your laptop —
+   use Export/Import to sync between them.
+
+Q: Can my partner see it too?
+A: Each device keeps its own copy. The easiest
+   way to share: use Export to download a
+   backup, email it to your partner, and they
+   use Import on their own copy. Or just plan
+   together on one device!
+
+Q: What happens if I clear my browser history?
+A: Your planner data might get wiped along
+   with cookies. That's why we recommend
+   exporting a backup once a week — you can
+   always restore it with Import!
+
+Q: Something looks funny or broken!
+A: Try refreshing the page (press F5 or
+   Ctrl+R). If that doesn't fix it, message me
+   on Etsy — I'm happy to help! 💌
+
+
+═══════════════════════════════════════════════════
+💡 PRO TIPS
+═══════════════════════════════════════════════════
+
+  ✦ Fill in your wedding date first — the
+    countdown wheel will come alive!
+
+  ✦ In Mood Board, try the "Preset Palettes" —
+    just click one and your colors are set.
+
+  ✦ Under Seating, drag guests from the pool
+    at the top onto tables.
+
+  ✦ Wedding Day Timeline builds itself as you
+    add times — just fill in the sections and
+    watch the preview at the top!
+
+  ✦ Add appointments in the Appointment Tracker
+    and they'll show up on the calendar view
+    automatically.
+
+  ✦ Don't forget to mark thank-you notes in
+    the Gifts tab — one less thing to forget!
+
+  ✦ Export your data every Sunday. Make it
+    a habit. Your future self will thank you!
+
+
+═══════════════════════════════════════════════════
+
+💌 Questions? Message me on Etsy!
+
+Happy planning, and congratulations again on
+your upcoming wedding! 💐✨
+
+With love,
+Ever After Planner
+═══════════════════════════════════════════════════

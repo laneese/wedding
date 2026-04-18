@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ever After Planner — Your Dream Wedding, Organized</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-frame">
+        <div class="header-actions">
+          <button class="btn-ghost" onclick="exportData()">📥 Export Data</button>
+          <button class="btn-ghost" onclick="document.getElementById('importFile').click()">📤 Import</button>
+          <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)"/>
+        </div>
+        <div class="header-inner">
+          <div class="logo-mark">✦</div>
+          <h1 class="site-title">Ever After <em>Planner</em></h1>
+          <p class="site-subtitle">Your all-in-one wedding planning dashboard — everything you need to plan your perfect day, beautifully organized.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Nav Tabs -->
+  <nav class="tab-nav" id="tabNav">
+    <div class="container">
+      <div class="tabs">
+        <button class="tab active" data-tab="overview">Overview</button>
+        <button class="tab" data-tab="weddingday">Wedding Day</button>
+        <button class="tab" data-tab="appointments">Appointments</button>
+        <button class="tab" data-tab="budget">Budget</button>
+        <button class="tab" data-tab="guests">Guests</button>
+        <button class="tab" data-tab="seating">Seating</button>
+        <button class="tab" data-tab="venue">Venue</button>
+        <button class="tab" data-tab="events">Events</button>
+        <button class="tab" data-tab="party">Wedding Party</button>
+        <button class="tab" data-tab="gifts">Gifts</button>
+        <button class="tab" data-tab="moodboard">Mood Board</button>
+        <button class="tab" data-tab="honeymoon">Honeymoon</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <div class="container">
+
+      <!-- ── OVERVIEW ── -->
+      <section class="tab-panel active" id="tab-overview">
+        <div class="section-header">
+          <h2>Your Big Day at a Glance</h2>
+          <p>Fill in the details below to track your progress and see your wedding summary.</p>
+        </div>
+
+        <div class="card tint-sage">
+          <h3 class="card-title">Wedding Details</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Partner 1 Name</label><input type="text" id="partner1" placeholder="e.g. Emma" /></div>
+            <div class="form-group"><label>Partner 2 Name</label><input type="text" id="partner2" placeholder="e.g. James" /></div>
+            <div class="form-group"><label>Wedding Date</label><input type="date" id="weddingDate" /></div>
+            <div class="form-group"><label>Wedding Location</label><input type="text" id="weddingLocation" placeholder="e.g. Tuscany, Italy" /></div>
+            <div class="form-group"><label>Total Budget ($)</label><input type="number" id="totalBudget" placeholder="e.g. 25000" min="0" /></div>
+            <div class="form-group"><label>Expected Guests</label><input type="number" id="expectedGuests" placeholder="e.g. 120" min="0" /></div>
+          </div>
+        </div>
+
+        <div class="wheels-row">
+          <div class="card wheel-card tint-peach">
+            <h3 class="card-title">Countdown</h3>
+            <div class="countdown-wheel">
+              <svg viewBox="0 0 200 200" class="ring-svg">
+                <circle cx="100" cy="100" r="85" class="ring-bg"/>
+                <circle cx="100" cy="100" r="85" class="ring-fill countdown-fill" id="countdownFill"/>
+              </svg>
+              <div class="wheel-center">
+                <div class="wheel-num" id="daysLeft">—</div>
+                <div class="wheel-lbl">Days to go</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card wheel-card tint-mint">
+            <h3 class="card-title">Tasks Complete</h3>
+            <div class="countdown-wheel">
+              <svg viewBox="0 0 200 200" class="ring-svg">
+                <circle cx="100" cy="100" r="85" class="ring-bg"/>
+                <circle cx="100" cy="100" r="85" class="ring-fill tasks-fill" id="tasksFill"/>
+              </svg>
+              <div class="wheel-center">
+                <div class="wheel-num" id="tasksPercent">0%</div>
+                <div class="wheel-lbl" id="tasksCount">0 / 0</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card wheel-card tint-cream">
+            <h3 class="card-title">Guest Responses</h3>
+            <div class="countdown-wheel">
+              <svg viewBox="0 0 200 200" class="ring-svg" id="rsvpSvg">
+                <circle cx="100" cy="100" r="85" class="ring-bg"/>
+              </svg>
+              <div class="wheel-center">
+                <div class="wheel-num" id="rsvpCount">0</div>
+                <div class="wheel-lbl">Confirmed</div>
+              </div>
+            </div>
+            <div class="rsvp-mini-legend">
+              <div class="leg"><span class="dot confirmed"></span> Yes: <strong id="legConfirmed">0</strong></div>
+              <div class="leg"><span class="dot declined"></span> No: <strong id="legDeclined">0</strong></div>
+              <div class="leg"><span class="dot pending"></span> Pending: <strong id="legPending">0</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card tint-cream">
+          <h3 class="card-title">Budget Overview</h3>
+          <div id="donutContainer" class="donut-wrap"></div>
+        </div>
+
+        <div class="card tint-mint">
+          <h3 class="card-title">Wedding Checklist</h3>
+          <p class="card-sub">Check off each task as you complete it — your progress updates automatically.</p>
+          <div id="checklistGrouped"></div>
+        </div>
+      </section>
+
+      <!-- ── WEDDING DAY TIMELINE ── -->
+      <section class="tab-panel" id="tab-weddingday">
+        <div class="section-header">
+          <h2>Wedding Day Timeline</h2>
+          <p>Every moment of your big day — with all vendor contacts in one place.</p>
+        </div>
+
+        <div class="timeline-preview" id="timelinePreview"></div>
+
+        <div class="card tint-sage">
+          <h3 class="card-title">👰 Bride's Morning</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Hair & Makeup Start</label><input type="time" id="wdBrideHairMakeup"/></div>
+            <div class="form-group"><label>Hair & Makeup Artist</label><input type="text" id="wdBrideHairArtist" placeholder="Name"/></div>
+            <div class="form-group"><label>Artist Phone 📞</label><input type="text" id="wdBrideHairPhone" placeholder="(555) 123-4567"/></div>
+            <div class="form-group"><label>Getting Dressed</label><input type="time" id="wdBrideDressed"/></div>
+            <div class="form-group"><label>Photos w/ Bridesmaids</label><input type="time" id="wdBridePhotos"/></div>
+            <div class="form-group full-width"><label>Location</label><input type="text" id="wdBrideLocation" placeholder="e.g. Hotel Suite 512"/></div>
+          </div>
+        </div>
+
+        <div class="card tint-cream">
+          <h3 class="card-title">🤵 Groom's Morning</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Getting Ready</label><input type="time" id="wdGroomReady"/></div>
+            <div class="form-group"><label>Photos w/ Groomsmen</label><input type="time" id="wdGroomPhotos"/></div>
+            <div class="form-group full-width"><label>Location</label><input type="text" id="wdGroomLocation" placeholder="e.g. Home / Hotel"/></div>
+          </div>
+        </div>
+
+        <div class="card tint-peach">
+          <h3 class="card-title">💒 Ceremony</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Guest Arrival</label><input type="time" id="wdGuestArrival"/></div>
+            <div class="form-group"><label>Ceremony Start</label><input type="time" id="wdCeremonyStart"/></div>
+            <div class="form-group full-width"><label>Venue & Address</label><input type="text" id="wdCeremonyVenue" placeholder="e.g. St. Mary's Chapel, 123 Main St"/></div>
+            <div class="form-group"><label>Officiant</label><input type="text" id="wdOfficiantName" placeholder="Name"/></div>
+            <div class="form-group"><label>Officiant Phone 📞</label><input type="text" id="wdOfficiantPhone" placeholder="(555) 123-4567"/></div>
+            <div class="form-group"><label>Photographer</label><input type="text" id="wdPhotographer" placeholder="Name / Company"/></div>
+            <div class="form-group"><label>Photographer Phone 📞</label><input type="text" id="wdPhotographerPhone" placeholder="(555) 123-4567"/></div>
+          </div>
+        </div>
+
+        <div class="card tint-mint transport-card">
+          <h3 class="card-title">🚗 Transportation 1 — Ceremony → Photos</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Pickup Time</label><input type="time" id="wdT1Time"/></div>
+            <div class="form-group"><label>Pickup From</label><input type="text" id="wdT1From" placeholder="Ceremony venue"/></div>
+            <div class="form-group"><label>Dropoff At</label><input type="text" id="wdT1To" placeholder="Photo location"/></div>
+            <div class="form-group"><label>Transport Type</label><select id="wdT1Type"><option>Limo</option><option>Town Car</option><option>Horse & Carriage</option><option>Vintage Car</option><option>Party Bus</option><option>Personal Vehicle</option><option>Other</option></select></div>
+            <div class="form-group"><label>Company</label><input type="text" id="wdT1Company" placeholder="e.g. Elegant Limos"/></div>
+            <div class="form-group"><label>Driver Phone 📞</label><input type="text" id="wdT1Phone" placeholder="(555) 123-4567"/></div>
+            <div class="form-group full-width"><label>Notes</label><input type="text" id="wdT1Notes" placeholder="e.g. Photo stop at park"/></div>
+          </div>
+        </div>
+
+        <div class="card tint-cream">
+          <h3 class="card-title">📸 Photo Session</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Photo Session Time</label><input type="time" id="wdPhotoTime"/></div>
+            <div class="form-group full-width"><label>Photo Location</label><input type="text" id="wdPhotoLocation" placeholder="e.g. Botanical Gardens"/></div>
+          </div>
+        </div>
+
+        <div class="card tint-mint transport-card">
+          <h3 class="card-title">🚗 Transportation 2 — Photos → Reception</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Pickup Time</label><input type="time" id="wdT2Time"/></div>
+            <div class="form-group"><label>Pickup From</label><input type="text" id="wdT2From" placeholder="Photo location"/></div>
+            <div class="form-group"><label>Dropoff At</label><input type="text" id="wdT2To" placeholder="Reception venue"/></div>
+            <div class="form-group"><label>Company</label><input type="text" id="wdT2Company" placeholder="Company"/></div>
+            <div class="form-group"><label>Driver Phone 📞</label><input type="text" id="wdT2Phone" placeholder="(555) 123-4567"/></div>
+          </div>
+        </div>
+
+        <div class="card tint-peach">
+          <h3 class="card-title">🥂 Reception</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Guest Arrival</label><input type="time" id="wdReceptionArrival"/></div>
+            <div class="form-group"><label>Reception Start</label><input type="time" id="wdReceptionStart"/></div>
+            <div class="form-group full-width"><label>Venue & Address</label><input type="text" id="wdReceptionVenue" placeholder="e.g. Grand Ballroom, 456 Park Ave"/></div>
+            <div class="form-group"><label>Cocktail Hour</label><input type="time" id="wdCocktail"/></div>
+            <div class="form-group"><label>Dinner Time</label><input type="time" id="wdDinner"/></div>
+            <div class="form-group"><label>Speeches / Toasts</label><input type="time" id="wdSpeeches"/></div>
+            <div class="form-group"><label>Cake Cutting</label><input type="time" id="wdCakeCutting"/></div>
+            <div class="form-group"><label>First Dance</label><input type="time" id="wdFirstDance"/></div>
+            <div class="form-group"><label>Last Song / Send-off</label><input type="time" id="wdLastSong"/></div>
+            <div class="form-group"><label>DJ / Band</label><input type="text" id="wdDJName" placeholder="Name"/></div>
+            <div class="form-group"><label>DJ / Band Phone 📞</label><input type="text" id="wdDJPhone" placeholder="(555) 123-4567"/></div>
+            <div class="form-group"><label>Caterer</label><input type="text" id="wdCatererName" placeholder="Name"/></div>
+            <div class="form-group"><label>Caterer Phone 📞</label><input type="text" id="wdCatererPhone" placeholder="(555) 123-4567"/></div>
+            <div class="form-group"><label>Venue Coordinator</label><input type="text" id="wdVenueCoord" placeholder="Name"/></div>
+            <div class="form-group"><label>Coordinator Phone 📞</label><input type="text" id="wdVenueCoordPhone" placeholder="(555) 123-4567"/></div>
+          </div>
+        </div>
+
+        <div class="card tint-mint transport-card">
+          <h3 class="card-title">🚗 Transportation 3 — Reception → Hotel / Airport</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Pickup Time</label><input type="time" id="wdT3Time"/></div>
+            <div class="form-group"><label>Pickup From</label><input type="text" id="wdT3From" placeholder="Reception venue"/></div>
+            <div class="form-group"><label>Final Destination</label><input type="text" id="wdT3To" placeholder="Hotel / Airport / Cruise"/></div>
+            <div class="form-group"><label>Transport Type</label><select id="wdT3Type"><option>Limo</option><option>Town Car</option><option>Uber / Lyft</option><option>Personal Vehicle</option><option>Shuttle</option><option>Other</option></select></div>
+            <div class="form-group"><label>Company</label><input type="text" id="wdT3Company" placeholder="Company"/></div>
+            <div class="form-group"><label>Driver Phone 📞</label><input type="text" id="wdT3Phone" placeholder="(555) 123-4567"/></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">📝 Special Notes & Reminders</h3>
+          <textarea id="wdSpecialNotes" rows="4" placeholder="Anything the wedding party or vendors need to know..." style="width:100%"></textarea>
+        </div>
+      </section>
+
+      <!-- ── APPOINTMENTS ── -->
+      <section class="tab-panel" id="tab-appointments">
+        <div class="section-header">
+          <h2>Appointment Tracker</h2>
+          <p>Log every vendor meeting, fitting, and venue tour — see them on your calendar.</p>
+        </div>
+
+        <div class="card tint-peach">
+          <h3 class="card-title">Add an Appointment</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Appointment Type</label>
+              <select id="apptType">
+                <optgroup label="Venues">
+                  <option value="Ceremony Venue">Ceremony Venue Tour</option>
+                  <option value="Reception Venue">Reception Venue Tour</option>
+                </optgroup>
+                <optgroup label="Attire">
+                  <option value="Bridal Dress Shop">Bridal Dress Shop</option>
+                  <option value="Dress Fitting">Dress Fitting</option>
+                  <option value="Tuxedo Rental">Tuxedo Rental</option>
+                  <option value="Tuxedo Fitting">Tuxedo Fitting</option>
+                </optgroup>
+                <optgroup label="Food & Cake">
+                  <option value="Caterer">Caterer Tasting</option>
+                  <option value="Cake Consultation">Cake Consultation</option>
+                  <option value="Bar Service">Bar Service</option>
+                </optgroup>
+                <optgroup label="Vendors">
+                  <option value="Photographer">Photographer</option>
+                  <option value="Videographer">Videographer</option>
+                  <option value="DJ / Band">DJ / Band</option>
+                  <option value="Florist">Florist</option>
+                  <option value="Hair & Makeup">Hair & Makeup Trial</option>
+                  <option value="Jeweler">Jeweler</option>
+                  <option value="Invitations">Invitations / Stationery</option>
+                  <option value="Transportation">Transportation</option>
+                  <option value="Honeymoon">Honeymoon Booking</option>
+                  <option value="Officiant">Officiant Meeting</option>
+                </optgroup>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Vendor / Shop Name</label><input type="text" id="apptVendor" placeholder="e.g. Vera's Bridal"/></div>
+            <div class="form-group"><label>Date</label><input type="date" id="apptDate"/></div>
+            <div class="form-group"><label>Time</label><input type="time" id="apptTime"/></div>
+            <div class="form-group"><label>Location / Address</label><input type="text" id="apptLocation" placeholder="e.g. 123 Main St"/></div>
+            <div class="form-group"><label>Phone Number 📞</label><input type="text" id="apptPhone" placeholder="(555) 123-4567"/></div>
+            <div class="form-group full-width"><label>Notes</label><input type="text" id="apptNotes" placeholder="e.g. Bring mom, ask about alterations"/></div>
+          </div>
+          <button class="btn-primary mt" onclick="addAppointment()">+ Add Appointment</button>
+        </div>
+
+        <div class="appt-stats">
+          <div class="stat-card small"><div class="stat-value" id="apptTotal">0</div><div class="stat-label">Total</div></div>
+          <div class="stat-card small confirmed"><div class="stat-value" id="apptAttended">0</div><div class="stat-label">Attended</div></div>
+          <div class="stat-card small pending"><div class="stat-value" id="apptUpcoming">0</div><div class="stat-label">Upcoming</div></div>
+        </div>
+
+        <div class="view-toggle">
+          <button class="view-btn active" data-view="list" onclick="switchApptView('list')">📋 List View</button>
+          <button class="view-btn" data-view="calendar" onclick="switchApptView('calendar')">📅 Calendar View</button>
+        </div>
+
+        <div class="card" id="apptListCard">
+          <h3 class="card-title">All Appointments</h3>
+          <div class="appt-list" id="apptList"></div>
+        </div>
+
+        <div class="card" id="apptCalendarCard" style="display:none">
+          <div class="calendar-wrap">
+            <div class="calendar-header">
+              <button class="calendar-nav-btn" onclick="changeMonth(-1)">‹</button>
+              <div class="calendar-title" id="calendarTitle">Month Year</div>
+              <button class="calendar-nav-btn" onclick="changeMonth(1)">›</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+            <div class="selected-day-panel" id="selectedDayPanel" style="display:none"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── BUDGET ── -->
+      <section class="tab-panel" id="tab-budget">
+        <div class="section-header">
+          <h2>Budget Tracker</h2>
+          <p>Add every expense so you never go over budget.</p>
+        </div>
+
+        <div class="card tint-peach">
+          <h3 class="card-title">Add an Expense</h3>
+          <div class="form-row">
+            <input type="text" id="expName" placeholder="Item (e.g. Florist)" class="flex-input"/>
+            <select id="expCategory" class="select-input">
+              <option value="Venue">Venue</option><option value="Catering">Catering</option>
+              <option value="Photography">Photography</option><option value="Flowers">Flowers</option>
+              <option value="Music">Music</option><option value="Attire">Attire</option>
+              <option value="Cake">Cake</option><option value="Transport">Transport</option>
+              <option value="Honeymoon">Honeymoon</option><option value="Stationery">Stationery</option>
+              <option value="Other">Other</option>
+            </select>
+            <input type="number" id="expAmount" placeholder="Amount $" class="amount-input" min="0"/>
+            <button class="btn-primary" onclick="addExpense()">+ Add</button>
+          </div>
+        </div>
+
+        <div class="card tint-cream">
+          <h3 class="card-title">Budget Summary</h3>
+          <div class="budget-summary">
+            <div class="bsum-item"><span class="bsum-label">Total Budget</span><span class="bsum-value" id="bTotal">$0</span></div>
+            <div class="bsum-item"><span class="bsum-label">Spent</span><span class="bsum-value spent" id="bSpent">$0</span></div>
+            <div class="bsum-item"><span class="bsum-label">Remaining</span><span class="bsum-value remaining" id="bRemaining">$0</span></div>
+          </div>
+          <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill alt" id="budgetFill"></div></div></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Expenses</h3>
+          <table class="data-table">
+            <thead><tr><th>Item</th><th>Category</th><th>Amount</th><th></th></tr></thead>
+            <tbody id="expenseBody"><tr class="empty-row"><td colspan="4">No expenses yet. Add one above! 💸</td></tr></tbody>
+          </table>
+        </div>
+
+        <div class="card tint-mint">
+          <h3 class="card-title">Spending by Category</h3>
+          <div class="bar-chart-wrap" id="barChart"></div>
+        </div>
+      </section>
+
+      <!-- ── GUESTS ── -->
+      <section class="tab-panel" id="tab-guests">
+        <div class="section-header">
+          <h2>Guest List & RSVP</h2>
+          <p>Keep track of who's coming and who's not.</p>
+        </div>
+
+        <div class="card tint-peach">
+          <h3 class="card-title">Add a Guest</h3>
+          <div class="form-row">
+            <input type="text" id="guestName" placeholder="Full Name" class="flex-input"/>
+            <input type="text" id="guestEmail" placeholder="Email (optional)" class="flex-input"/>
+            <select id="guestSide" class="select-input">
+              <option value="Partner 1">Partner 1's Side</option>
+              <option value="Partner 2">Partner 2's Side</option>
+              <option value="Joint">Joint</option>
+            </select>
+            <select id="guestRsvp" class="select-input">
+              <option value="Pending">Pending</option>
+              <option value="Confirmed">Confirmed ✓</option>
+              <option value="Declined">Declined ✗</option>
+            </select>
+            <select id="guestMeal" class="select-input">
+              <option value="Standard">Standard</option><option value="Vegetarian">Vegetarian</option>
+              <option value="Vegan">Vegan</option><option value="Gluten-Free">Gluten-Free</option>
+            </select>
+            <button class="btn-primary" onclick="addGuest()">+ Add</button>
+          </div>
+        </div>
+
+        <div class="stats-grid mini">
+          <div class="stat-card small"><div class="stat-value" id="gTotal">0</div><div class="stat-label">Total Invited</div></div>
+          <div class="stat-card small confirmed"><div class="stat-value" id="gConfirmed">0</div><div class="stat-label">Confirmed</div></div>
+          <div class="stat-card small declined"><div class="stat-value" id="gDeclined">0</div><div class="stat-label">Declined</div></div>
+          <div class="stat-card small pending"><div class="stat-value" id="gPending">0</div><div class="stat-label">Pending</div></div>
+        </div>
+
+        <div class="card">
+          <div class="filter-row">
+            <input type="text" id="guestSearch" placeholder="🔍 Search guests..." class="search-input" oninput="renderGuests()"/>
+            <select id="guestFilter" class="select-input small" onchange="renderGuests()">
+              <option value="All">All RSVPs</option><option value="Confirmed">Confirmed</option>
+              <option value="Declined">Declined</option><option value="Pending">Pending</option>
+            </select>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>Name</th><th>Side</th><th>RSVP</th><th>Meal</th><th></th></tr></thead>
+            <tbody id="guestBody"><tr class="empty-row"><td colspan="5">No guests yet. Add someone! 💌</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── SEATING ── -->
+      <section class="tab-panel" id="tab-seating">
+        <div class="section-header">
+          <h2>Seating Chart</h2>
+          <p>Drag guests onto tables to assign their seats.</p>
+        </div>
+
+        <div class="card tint-cream">
+          <h3 class="card-title">Add a Table</h3>
+          <div class="form-row">
+            <input type="text" id="tableName" placeholder="Table name (e.g. Rose Table)" class="flex-input"/>
+            <input type="number" id="tableSeats" placeholder="Seats" class="amount-input" min="2" max="16" value="8"/>
+            <button class="btn-primary" onclick="addTable()">+ Add Table</button>
+          </div>
+        </div>
+
+        <div class="unassigned-pool">
+          <div class="unassigned-pool-title">🪑 Unassigned Guests (drag to a table)</div>
+          <div class="unassigned-chips" id="unassignedChips"></div>
+        </div>
+
+        <div class="seating-grid" id="seatingGrid">
+          <p class="empty-msg">🪑 No tables yet. Create a table above to get started!</p>
+        </div>
+      </section>
+
+      <!-- ── VENUE ── -->
+      <section class="tab-panel" id="tab-venue">
+        <div class="section-header">
+          <h2>Venue Comparison</h2>
+          <p>Compare potential venues side by side.</p>
+        </div>
+
+        <div class="card tint-peach">
+          <h3 class="card-title">Add a Venue</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Venue Name</label><input type="text" id="venueName" placeholder="e.g. Rose Garden Estate"/></div>
+            <div class="form-group"><label>Location</label><input type="text" id="venueLocation" placeholder="e.g. Napa Valley, CA"/></div>
+            <div class="form-group"><label>Capacity</label><input type="number" id="venueCapacity" placeholder="e.g. 200" min="0"/></div>
+            <div class="form-group"><label>Price ($)</label><input type="number" id="venuePrice" placeholder="e.g. 8000" min="0"/></div>
+            <div class="form-group"><label>Indoor / Outdoor</label><select id="venueType"><option>Indoor</option><option>Outdoor</option><option>Both</option></select></div>
+            <div class="form-group"><label>Catering Included?</label><select id="venueCatering"><option value="Yes">Yes</option><option value="No">No</option><option value="Optional">Optional</option></select></div>
+            <div class="form-group full-width"><label>Notes</label><textarea id="venueNotes" placeholder="Parking, vibe, things you loved..." rows="2"></textarea></div>
+            <div class="form-group full-width"><label>Rating</label>
+              <div class="star-rating" id="starRating">
+                <span class="star" data-val="1">★</span><span class="star" data-val="2">★</span>
+                <span class="star" data-val="3">★</span><span class="star" data-val="4">★</span>
+                <span class="star" data-val="5">★</span>
+              </div>
+            </div>
+          </div>
+          <button class="btn-primary mt" onclick="addVenue()">+ Add Venue</button>
+        </div>
+
+        <div class="venue-cards" id="venueCards">
+          <p class="empty-msg">🏛️ No venues yet. Add one above to start comparing!</p>
+        </div>
+      </section>
+
+      <!-- ── EVENTS (sub-tabs) ── -->
+      <section class="tab-panel" id="tab-events">
+        <div class="section-header">
+          <h2>Wedding Events</h2>
+          <p>Plan every celebration around your big day.</p>
+        </div>
+
+        <div class="subtabs">
+          <button class="subtab active" data-subtab="shower">🌸 Bridal Shower</button>
+          <button class="subtab" data-subtab="bachelorette">🥂 Bachelorette</button>
+          <button class="subtab" data-subtab="bachelor">🥃 Bachelor</button>
+          <button class="subtab" data-subtab="rehearsal">🍽️ Rehearsal Dinner</button>
+        </div>
+
+        <!-- Bridal Shower -->
+        <div class="subtab-panel active" id="sub-shower">
+          <div class="card tint-peach">
+            <h3 class="card-title">Bridal Shower Details</h3>
+            <div class="form-grid">
+              <div class="form-group"><label>Date</label><input type="date" id="showerDate" onchange="saveEvent('shower')"/></div>
+              <div class="form-group"><label>Venue / Location</label><input type="text" id="showerVenue" placeholder="e.g. The Garden Room" oninput="saveEvent('shower')"/></div>
+              <div class="form-group"><label>Host</label><input type="text" id="showerHost" placeholder="e.g. Maid of Honor" oninput="saveEvent('shower')"/></div>
+              <div class="form-group full-width"><label>Theme / Notes</label><input type="text" id="showerNotes" placeholder="e.g. Garden tea party" oninput="saveEvent('shower')"/></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">Attendees</h3>
+            <div class="form-row">
+              <input type="text" id="showerAttendee" placeholder="Guest name" class="flex-input"/>
+              <button class="btn-primary" onclick="addAttendee('shower')">+ Add</button>
+            </div>
+            <table class="data-table" style="margin-top:16px">
+              <thead><tr><th>Name</th><th></th></tr></thead>
+              <tbody id="showerAttendeeBody"><tr class="empty-row"><td colspan="2">No attendees added yet.</td></tr></tbody>
+            </table>
+          </div>
+
+          <div class="card tint-mint">
+            <h3 class="card-title">Gifts Received</h3>
+            <p class="card-sub">Track gifts and mark when thank-you cards are sent.</p>
+            <div class="form-row">
+              <input type="text" id="showerGiftItem" placeholder="Gift (e.g. Crystal vase)" class="flex-input"/>
+              <input type="text" id="showerGiftFrom" placeholder="From" class="flex-input"/>
+              <button class="btn-primary" onclick="addGift('shower')">+ Add</button>
+            </div>
+            <div id="showerGiftList" style="margin-top:16px"></div>
+          </div>
+        </div>
+
+        <!-- Bachelorette -->
+        <div class="subtab-panel" id="sub-bachelorette">
+          <div class="card tint-peach">
+            <h3 class="card-title">Bachelorette Party Details</h3>
+            <div class="form-grid">
+              <div class="form-group"><label>Date</label><input type="date" id="bacheloretteDate" onchange="saveEvent('bachelorette')"/></div>
+              <div class="form-group"><label>Location / City</label><input type="text" id="bacheloretteVenue" placeholder="e.g. Nashville, TN" oninput="saveEvent('bachelorette')"/></div>
+              <div class="form-group"><label>Planned by</label><input type="text" id="bacheloretteHost" placeholder="e.g. Sarah" oninput="saveEvent('bachelorette')"/></div>
+              <div class="form-group full-width"><label>Activities / Notes</label><input type="text" id="bacheloretteNotes" placeholder="e.g. Spa day, dinner, dancing" oninput="saveEvent('bachelorette')"/></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Invitees</h3>
+            <div class="form-row">
+              <input type="text" id="bacheloretteAttendee" placeholder="Guest name" class="flex-input"/>
+              <button class="btn-primary" onclick="addAttendee('bachelorette')">+ Add</button>
+            </div>
+            <table class="data-table" style="margin-top:16px">
+              <thead><tr><th>Name</th><th></th></tr></thead>
+              <tbody id="bacheloretteAttendeeBody"><tr class="empty-row"><td colspan="2">No invitees added yet.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Bachelor -->
+        <div class="subtab-panel" id="sub-bachelor">
+          <div class="card tint-peach">
+            <h3 class="card-title">Bachelor Party Details</h3>
+            <div class="form-grid">
+              <div class="form-group"><label>Date</label><input type="date" id="bachelorDate" onchange="saveEvent('bachelor')"/></div>
+              <div class="form-group"><label>Location / City</label><input type="text" id="bachelorVenue" placeholder="e.g. Las Vegas, NV" oninput="saveEvent('bachelor')"/></div>
+              <div class="form-group"><label>Planned by</label><input type="text" id="bachelorHost" placeholder="e.g. Best Man" oninput="saveEvent('bachelor')"/></div>
+              <div class="form-group full-width"><label>Activities / Notes</label><input type="text" id="bachelorNotes" placeholder="e.g. Golf, steakhouse, cigars" oninput="saveEvent('bachelor')"/></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Invitees</h3>
+            <div class="form-row">
+              <input type="text" id="bachelorAttendee" placeholder="Guest name" class="flex-input"/>
+              <button class="btn-primary" onclick="addAttendee('bachelor')">+ Add</button>
+            </div>
+            <table class="data-table" style="margin-top:16px">
+              <thead><tr><th>Name</th><th></th></tr></thead>
+              <tbody id="bachelorAttendeeBody"><tr class="empty-row"><td colspan="2">No invitees added yet.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Rehearsal Dinner -->
+        <div class="subtab-panel" id="sub-rehearsal">
+          <div class="card tint-peach">
+            <h3 class="card-title">Rehearsal Dinner Details</h3>
+            <div class="form-grid">
+              <div class="form-group"><label>Date</label><input type="date" id="rehearsalDate" onchange="saveEvent('rehearsal')"/></div>
+              <div class="form-group"><label>Time</label><input type="text" id="rehearsalTime" placeholder="e.g. 6:30 PM" oninput="saveEvent('rehearsal')"/></div>
+              <div class="form-group"><label>Restaurant / Caterer</label><input type="text" id="rehearsalVenue" placeholder="e.g. Luigi's Italian" oninput="saveEvent('rehearsal')"/></div>
+              <div class="form-group"><label>Dress Code</label><input type="text" id="rehearsalDress" placeholder="e.g. Smart casual" oninput="saveEvent('rehearsal')"/></div>
+              <div class="form-group full-width"><label>Notes</label><input type="text" id="rehearsalNotes" placeholder="Menu, toasts, special requests" oninput="saveEvent('rehearsal')"/></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Attendees</h3>
+            <div class="form-row">
+              <input type="text" id="rehearsalAttendee" placeholder="Guest name" class="flex-input"/>
+              <button class="btn-primary" onclick="addAttendee('rehearsal')">+ Add</button>
+            </div>
+            <table class="data-table" style="margin-top:16px">
+              <thead><tr><th>Name</th><th></th></tr></thead>
+              <tbody id="rehearsalAttendeeBody"><tr class="empty-row"><td colspan="2">No attendees added yet.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── WEDDING PARTY ── -->
+      <section class="tab-panel" id="tab-party">
+        <div class="section-header">
+          <h2>Wedding Party</h2>
+          <p>Keep track of your bridal party, groomsmen, and special roles.</p>
+        </div>
+
+        <div class="party-roles-grid" id="partyRolesGrid"></div>
+      </section>
+
+      <!-- ── GIFTS ── -->
+      <section class="tab-panel" id="tab-gifts">
+        <div class="section-header">
+          <h2>Wedding Gift Tracker</h2>
+          <p>Track every gift received and mark when thank-you cards are sent.</p>
+        </div>
+
+        <div class="card tint-peach">
+          <h3 class="card-title">Add a Gift</h3>
+          <div class="form-row">
+            <input type="text" id="weddingGiftItem" placeholder="Gift (e.g. KitchenAid mixer)" class="flex-input"/>
+            <input type="text" id="weddingGiftFrom" placeholder="From" class="flex-input"/>
+            <button class="btn-primary" onclick="addGift('wedding')">+ Add</button>
+          </div>
+        </div>
+
+        <div class="stats-grid mini">
+          <div class="stat-card small"><div class="stat-value" id="giftTotal">0</div><div class="stat-label">Total Gifts</div></div>
+          <div class="stat-card small confirmed"><div class="stat-value" id="giftThankYesCount">0</div><div class="stat-label">Thank-you Sent</div></div>
+          <div class="stat-card small pending"><div class="stat-value" id="giftThankNoCount">0</div><div class="stat-label">To Send</div></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">All Wedding Gifts</h3>
+          <div id="weddingGiftList"></div>
+        </div>
+      </section>
+
+      <!-- ── MOOD BOARD ── -->
+      <section class="tab-panel" id="tab-moodboard">
+        <div class="section-header">
+          <h2>Colour & Style Mood Board</h2>
+          <p>Define your wedding aesthetic — colours, style, and inspiration.</p>
+        </div>
+
+        <div class="palette-hero-card">
+          <div class="palette-hero-label">Your Wedding Palette</div>
+          <div class="palette-hero-strip" id="paletteHeroStrip"></div>
+          <div class="palette-hero-names" id="paletteHeroNames"></div>
+        </div>
+
+        <div class="card tint-cream">
+          <h3 class="card-title">Preset Palettes</h3>
+          <p class="card-sub">Click to apply a curated palette.</p>
+          <div class="preset-palettes" id="presetPalettes"></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Build Your Palette</h3>
+          <div class="color-palette-builder">
+            <div id="paletteSwatches" class="swatch-row"></div>
+            <div class="form-row">
+              <input type="color" id="colorPicker" value="#b8c9a3"/>
+              <input type="text" id="colorName" placeholder="Color name (e.g. Sage Green)" class="flex-input"/>
+              <button class="btn-primary" onclick="addColor()">+ Add</button>
+              <button class="btn-secondary" onclick="clearColors()">🗑 Clear All</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card tint-mint">
+          <h3 class="card-title">Wedding Style</h3>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px">
+            <p class="card-sub" style="margin:0">Pick any styles that speak to you.</p>
+            <button class="btn-secondary" onclick="clearStyles()">Clear</button>
+          </div>
+          <div class="style-grid" id="styleGrid"></div>
+        </div>
+
+        <div class="card tint-peach">
+          <h3 class="card-title">Inspiration Notes & Vision</h3>
+          <textarea id="visionNote" rows="5" placeholder="Describe your dream wedding..." style="width:100%; resize:vertical;"></textarea>
+          <div class="mood-keywords" id="moodKeywords"></div>
+          <button class="btn-secondary mt" onclick="clearVision()">Clear Notes</button>
+        </div>
+
+        <div class="card tint-sage">
+          <h3 class="card-title">Flower Choices</h3>
+          <div style="display:flex; justify-content:flex-end; margin-bottom:14px">
+            <button class="btn-secondary" onclick="clearFlowers()">Clear</button>
+          </div>
+          <div class="flower-grid" id="flowerGrid"></div>
+        </div>
+      </section>
+
+      <!-- ── HONEYMOON ── -->
+      <section class="tab-panel" id="tab-honeymoon">
+        <div class="section-header">
+          <h2>Honeymoon Planner</h2>
+          <p>Dream big — plan your perfect post-wedding getaway.</p>
+        </div>
+
+        <div class="card tint-peach">
+          <h3 class="card-title">Honeymoon Details</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Destination</label><input type="text" id="hmDest" placeholder="e.g. Maldives"/></div>
+            <div class="form-group"><label>Departure Date</label><input type="date" id="hmDepart"/></div>
+            <div class="form-group"><label>Return Date</label><input type="date" id="hmReturn"/></div>
+            <div class="form-group"><label>Budget ($)</label><input type="number" id="hmBudget" placeholder="e.g. 6000"/></div>
+            <div class="form-group"><label>Accommodation</label>
+              <select id="hmAccom"><option>Luxury Resort</option><option>Boutique Hotel</option><option>Airbnb / Villa</option><option>Overwater Bungalow</option><option>Adventure / Camping</option></select>
+            </div>
+            <div class="form-group"><label>Travel Style</label>
+              <select id="hmStyle"><option>Relaxation</option><option>Adventure</option><option>Cultural</option><option>City Hopping</option><option>Beach & Ocean</option><option>Mountain & Nature</option></select>
+            </div>
+            <div class="form-group full-width"><label>Dream Experiences</label><textarea id="hmNotes" rows="3" placeholder="Sunset sail, private beach dinner..."></textarea></div>
+          </div>
+          <button class="btn-primary mt" onclick="saveHoneymoon()">Save Honeymoon Plan ✈️</button>
+        </div>
+
+        <div class="card tint-cream" id="hmSummaryCard" style="display:none;">
+          <h3 class="card-title">Your Honeymoon ✈️</h3>
+          <div class="hm-summary" id="hmSummary"></div>
+        </div>
+
+        <div class="card tint-mint">
+          <h3 class="card-title">Packing List</h3>
+          <div class="form-row">
+            <input type="text" id="packItem" placeholder="Add item" class="flex-input"/>
+            <button class="btn-primary" onclick="addPackItem()">+ Add</button>
+          </div>
+          <div class="pack-list" id="packList"></div>
+          <div class="pack-presets">
+            <p class="preset-label">Quick add essentials</p>
+            <div class="preset-chips" id="presetChips"></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Made with love for your special day 💐 &nbsp;|&nbsp; Ever After Planner &nbsp;|&nbsp; Your data is saved automatically on this device</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
